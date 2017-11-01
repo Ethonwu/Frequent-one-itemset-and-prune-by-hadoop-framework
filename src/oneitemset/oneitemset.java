@@ -2,7 +2,6 @@ package oneitemset;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -17,9 +16,6 @@ import org.apache.hadoop.util.GenericOptionsParser;
 public class oneitemset {
 	public static class TokenizerMapper 
     extends Mapper<Object, Text, Text, IntWritable>{
- 
- private final static IntWritable one = new IntWritable(1);
- private Text word = new Text();
  private String T = new String();
  public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
    StringTokenizer itr = new StringTokenizer(value.toString());
@@ -29,8 +25,9 @@ public class oneitemset {
      while (st.hasMoreTokens())
      {  
    	      //Word count here
-         word.set(st.nextToken().toString());
-         context.write(word, one);
+    	
+         context.write(new Text(st.nextToken().toString()),new IntWritable(1));
+         
      
      }
     
@@ -62,17 +59,19 @@ public static class IntSumReducer
    for (IntWritable val : values) {
      sum += val.get();
    }
-   result.set(sum);
-   context.write(key, result);
+   //result.set(sum);
+   //context.write(key, result);
    if(sum>=2) {
+	   result.set(sum);
+	   context.write(key, result);
      frequent_one_itemset.add(key.toString());
-  // context.write(key,null);
+    
    }
  }
 }
 
 public static class PruneMapper 
-//extends Mapper<Object, Text, Text, IntWritable>{
+
 	extends Mapper<Object, Text, Text, Text>{
 
 private String T = new String();
@@ -80,6 +79,7 @@ private String Prune_T = new String();
 public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
 StringTokenizer itr = new StringTokenizer(value.toString());
 while (itr.hasMoreTokens()) {
+	Prune_T = new String();
 	Prune_T = "";
  T = itr.nextToken().toString();
  StringTokenizer st = new StringTokenizer(T, ",");
