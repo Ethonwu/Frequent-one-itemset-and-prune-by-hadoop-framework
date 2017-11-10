@@ -55,6 +55,7 @@ Reduce site example:
 	Input: Map Output 
 
 	Due to Key is length from every transcation, the output would sort
+
 	Output: (Pruned transcation , null)
 
 
