@@ -2,7 +2,9 @@
 
 ## Introduction
 
-Our Algorithm have two jobs 
+Our Algorithm have six jobs 
+
+4 Jobs next time intro 
 
 First Job is **Counting** items
 
